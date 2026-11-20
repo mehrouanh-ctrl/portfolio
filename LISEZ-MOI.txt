@@ -1,0 +1,17 @@
+SITE PORTFOLIO — MEHROUAN HATTAB
+================================
+OUVRIR : double-clique sur index.html
+
+STRUCTURE
+  index.html / evenementiel.html / marketing.html / communication.html   -> les 4 pages
+  css/style.css      -> design (couleurs et polices en haut du fichier, section :root)
+  js/content.js      -> TOUS tes textes, liens, projets, images (le fichier à modifier en premier)
+  js/main.js         -> animations et construction des pages
+  images/            -> visuels (illustrations d'exemple en .svg)
+
+REMPLACER LES IMAGES PAR TES PHOTOS
+  1. Mets tes photos (.jpg/.webp) dans le dossier images/
+  2. Dans js/content.js, remplace par ex. "images/portrait.svg" par "images/ma-photo.jpg"
+  Formats conseillés : portrait/cartes en vertical (4:5), couvertures en horizontal (16:9), < 400 Ko chacune.
+
+METTRE EN LIGNE (gratuit) : Netlify Drop (app.netlify.com/drop), Vercel ou GitHub Pages — glisse tout le dossier.
