@@ -5,14 +5,274 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mehrouan Hattab — Portfolio</title>
 <meta name="description" content="Portfolio de Mehrouan Hattab — événementiel, marketing et communication.">
-<link rel="icon" href="images/favicon.svg">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiNmNGQ5ZDAiLz48dGV4dCB4PSIzMiIgeT0iNDQiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjM0IiBmb250LXN0eWxlPSJpdGFsaWMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZjVhNDciPk08L3RleHQ+PC9zdmc+">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<style>
+/* ===== VARIABLES : change ici les couleurs et polices ===== */
+:root{--ink:#171412;--paper:#fff;--cream:#faf5ef;--rose:#f4d9d0;--coral:#ff5a47;--mut:#7a726b;
+--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--r:32px;--ease:cubic-bezier(.77,0,.18,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);font-weight:300;color:var(--ink);background:var(--paper);line-height:1.7;overflow-x:hidden}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--coral);color:#fff}
+em{font-style:italic;color:var(--coral)}
+
+/* ===== Rideau de transition & curseur ===== */
+.curtain{position:fixed;inset:0;z-index:999;background:var(--rose);display:grid;place-items:center;font:italic 500 clamp(3rem,9vw,6rem) var(--serif);transition:transform .85s var(--ease);pointer-events:none}
+.curtain.out{transform:translateY(-100%)}.curtain.pre{transform:translateY(100%);transition:none}
+.dot{position:fixed;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--coral);mix-blend-mode:multiply;opacity:0;pointer-events:none;z-index:900;transition:width .3s,height .3s,margin .3s,opacity .3s}
+.dot.big{width:64px;height:64px;margin:-23px 0 0 -23px;background:var(--rose)}
+
+/* ===== Menu ===== */
+.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:20px 4vw;background:rgba(255,255,255,.8);backdrop-filter:blur(16px)}
+.brand{font:600 1.7rem var(--serif)}.brand span{color:var(--coral)}
+.top nav{display:flex;gap:34px;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;font-weight:400}
+.top nav a{position:relative;padding:4px 0}
+.top nav a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--coral);transition:width .4s}
+.top nav a:hover::after,.top nav a.on::after{width:100%}
+
+/* ===== Boutons & textes ===== */
+.eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--coral);font-weight:500;margin-bottom:18px}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 30px;border-radius:99px;background:var(--ink);color:#fff;font-size:.85rem;letter-spacing:.06em;font-weight:400;transition:background .35s,transform .35s,box-shadow .35s}
+.btn i{font-style:normal;transition:transform .3s}.btn:hover{background:var(--coral);transform:translateY(-3px);box-shadow:0 14px 30px -10px var(--coral)}.btn:hover i{transform:translateX(6px)}
+.btn.big{font:500 clamp(1rem,2.4vw,1.6rem) var(--serif);padding:20px 44px}
+.link{margin-left:26px;border-bottom:1px solid var(--ink);padding-bottom:2px;font-size:.85rem;transition:color .3s,border-color .3s}.link:hover{color:var(--coral);border-color:var(--coral)}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.02;letter-spacing:-.01em}
+h2{font-size:clamp(2.4rem,5.5vw,4.6rem)}
+.sec{padding:110px 6vw;max-width:1360px;margin:0 auto}.sec>h2{margin-bottom:56px}.narrow{max-width:980px}
+.big{font:500 clamp(1.5rem,3vw,2.5rem)/1.35 var(--serif)}
+
+/* ===== Animations d'apparition ===== */
+.rv{opacity:0;transform:translateY(46px);transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
+.rv.on{opacity:1;transform:none}
+.tilt.on{transition:opacity 1s,transform .25s ease-out}
+.ln{display:block;overflow:hidden;padding-bottom:.08em}.ln>span{display:block;transform:translateY(112%);transition:transform 1.2s var(--ease)}
+.ln:nth-child(2)>span{transition-delay:.12s}.ready .ln>span{transform:none}
+
+/* ===== Accueil : hero ===== */
+.hero{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:3vw;padding:130px 6vw 70px;background:radial-gradient(circle at 85% 20%,var(--rose),transparent 55%),radial-gradient(circle at 5% 90%,var(--cream),transparent 50%)}
+.hero h1{font-size:clamp(4.2rem,11.5vw,10.5rem);margin:6px 0 30px}
+.lead{font-size:1.15rem;max-width:520px;color:var(--mut);margin-bottom:38px}
+.hero-img{position:relative;height:min(76vh,640px)}
+.arch{position:absolute;overflow:hidden;border-radius:999px 999px 28px 28px;box-shadow:0 40px 70px -30px rgba(80,40,30,.35)}
+.a1{left:2%;top:6%;width:48%;height:86%}.a2{right:2%;top:0;width:44%;height:68%}
+.arch img{transition:transform 1.4s var(--ease)}.arch:hover img{transform:scale(1.08)}
+.seal{position:absolute;right:8%;bottom:2%;width:150px;height:150px;background:var(--paper);border-radius:50%;padding:6px;animation:rot 16s linear infinite;box-shadow:0 14px 30px -12px rgba(0,0,0,.25)}
+.seal text{font:500 8.4px var(--sans);letter-spacing:.18em;fill:var(--ink)}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* ===== Bandeau défilant ===== */
+.marquee{overflow:hidden;background:var(--ink);color:#fff;padding:22px 0;white-space:nowrap}
+.marquee div{display:inline-flex;animation:mq 34s linear infinite}
+.marquee span{font:italic 500 2.4rem var(--serif);padding:0 28px}.marquee span:nth-child(even){color:var(--coral);font-style:normal}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ===== Cartes : photo qui s'efface vers le blanc ===== */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:34px}
+.card{border-radius:var(--r);background:#fff;box-shadow:0 30px 70px -34px rgba(60,30,20,.4);overflow:hidden;will-change:transform}
+.card:hover{box-shadow:0 40px 80px -30px rgba(255,90,71,.5)}
+.photo{position:relative;height:370px;overflow:hidden}
+.photo img{transition:transform 1.4s var(--ease)}.card:hover .photo img{transform:scale(1.08)}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 38%,#fff 98%)}
+.num{position:absolute;top:20px;left:22px;z-index:2;background:#fff;border-radius:99px;padding:3px 14px;font:600 1rem var(--serif)}
+.body{position:relative;z-index:2;padding:0 30px 34px;margin-top:-62px;transform:translateZ(40px)}
+.body h3{font-size:2.5rem;margin-bottom:8px}.body p{color:var(--mut);margin-bottom:22px}
+
+/* ===== À propos ===== */
+.about{display:grid;grid-template-columns:.8fr 1.2fr;gap:6vw;align-items:center}
+.portrait{height:560px;border-radius:999px 999px var(--r) var(--r);overflow:hidden;box-shadow:0 40px 80px -36px rgba(80,40,30,.45)}
+.txt{color:var(--mut);margin:26px 0 38px;max-width:560px}
+.stats{display:flex;gap:44px;flex-wrap:wrap}.stats b{font:500 3.6rem var(--serif);color:var(--coral);display:block;line-height:1}.stats small{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+
+/* ===== Pages de détail ===== */
+.dhero{padding:170px 6vw 50px;max-width:1360px;margin:0 auto;background:radial-gradient(circle at 90% 0,var(--rose),transparent 50%)}
+.dhero h1{font-size:clamp(3.6rem,11vw,9.5rem);margin-bottom:24px}.back{display:inline-block;margin-bottom:30px;font-size:.82rem;color:var(--mut);transition:color .3s}.back:hover{color:var(--coral)}
+.cover{height:70vh;margin:0 4vw;border-radius:var(--r);overflow:hidden;box-shadow:0 40px 80px -40px rgba(80,40,30,.4)}.cover img{height:125%}
+.list .row{display:grid;grid-template-columns:70px 1fr 1.3fr;gap:20px;align-items:baseline;padding:30px 0;border-top:1px solid #e8dfd6;transition:padding .45s var(--ease),background .45s}
+.list .row:last-child{border-bottom:1px solid #e8dfd6}.row:hover{padding-left:24px;background:linear-gradient(90deg,var(--cream),transparent)}
+.row span{color:var(--coral);font:italic 500 1.4rem var(--serif)}.row h3{font-size:2.1rem}.row p{color:var(--mut)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:30px}
+.proj div{height:430px;border-radius:var(--r);overflow:hidden;box-shadow:0 30px 60px -34px rgba(60,30,20,.4)}.proj img{transition:transform 1.4s var(--ease)}.proj:hover img{transform:scale(1.08)}
+.proj figcaption{padding:18px 6px}.proj h4{font-size:1.8rem}.proj p{color:var(--mut);font-size:.92rem}
+.next{display:block;text-align:center;padding:120px 6vw;background:var(--rose);transition:background .5s}.next:hover{background:var(--coral);color:#fff}
+.next small{display:block;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:12px}.next span{font:italic 500 clamp(3rem,9vw,7rem) var(--serif)}
+
+/* ===== Pied de page ===== */
+.foot{text-align:center;padding:130px 6vw 40px;background:var(--cream)}
+.foot h2{font-size:clamp(3.5rem,10vw,9rem);margin-bottom:40px}.foot h2 span{color:var(--coral)}
+.foot-links{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;margin:50px 0 70px;font-size:.85rem}.foot-links a:hover{color:var(--coral)}
+.foot small{color:var(--mut)}
+
+@media(max-width:900px){
+.top nav{gap:16px;font-size:.6rem}.brand{display:none}.top{justify-content:center}
+.hero,.about{grid-template-columns:1fr}.hero-img{height:460px}.seal{width:110px;height:110px}.portrait{height:440px}
+.list .row{grid-template-columns:44px 1fr}.row p{grid-column:2}.dot{display:none}.link{margin-left:14px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+
+</style>
 </head>
-<body data-page="home">
+<body>
 <div id="app"></div>
-<script src="js/content.js"></script>
-<script src="js/main.js"></script>
+<noscript><p style="padding:120px 6vw;font-family:sans-serif">Ce site nécessite JavaScript pour s'afficher.</p></noscript>
+<script>
+/* =====================================================
+   TOUT TON CONTENU EST ICI — modifie les textes, liens et images.
+   Pour utiliser tes vraies photos : mets-les dans /images
+   puis change le nom du fichier (ex: "images/ma-photo.jpg").
+   Les chiffres et projets ci-dessous sont des EXEMPLES à remplacer.
+   ===================================================== */
+const SITE = {
+  nom: "Mehrouan Hattab",
+  accroche: "Je donne vie aux marques, aux événements et aux histoires qui rassemblent.",
+  email: "contact@exemple.ch",
+  tel: "+41 00 000 00 00",
+  linkedin: "https://www.linkedin.com/in/ton-profil",
+  instagram: "https://www.instagram.com/ton-compte",
+  portrait: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2Y0ZDlkMCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2U5YjhhNiIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSI1MTMiIGN5PSI0ODkiIHI9IjE2NSIgZmlsbD0iI2U5YjhhNiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIyODMiIGN5PSIzMzUiIHI9IjE3MSIgZmlsbD0iI2ZmZmFmNiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIxODgiIGN5PSIzNTciIHI9IjIzMyIgZmlsbD0iI2I4NTAzYSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2NDMiIGN5PSI4MDAiIHI9IjIyOSIgZmlsbD0iI2U5YjhhNiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNNTQxIDcyOVY0NTMuMEE5MS4wIDkxLjAgMCAwIDEgNzIzIDQ1My4wVjcyOVoiIGZpbGw9IiNmZmZhZjYiIG9wYWNpdHk9IjAuNjMiLz48cGF0aCBkPSJNNDYxIDc3MlY1ODUuNUExMjcuNSAxMjcuNSAwIDAgMSA3MTYgNTg1LjVWNzcyWiIgZmlsbD0iI2ZmZmFmNiIgb3BhY2l0eT0iMC41MSIvPjxwYXRoIGQ9Ik0zODYgNjk3VjQwNC41QTEwMi41IDEwMi41IDAgMCAxIDU5MSA0MDQuNVY2OTdaIiBmaWxsPSIjZmZmYWY2IiBvcGFjaXR5PSIwLjUxIi8+PGNpcmNsZSBjeD0iNTUzIiBjeT0iMTUwIiByPSI2NyIgZmlsbD0iI2I4NTAzYSIgb3BhY2l0eT0iLjg1Ii8+PGNpcmNsZSBjeD0iNTM1IiBjeT0iNDA4IiByPSIxMjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxjaXJjbGUgY3g9IjY0NyIgY3k9IjI4MiIgcj0iMjEyIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjYiLz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbHRlcj0idXJsKCNuKSIvPjwvc3ZnPg==",
+  apropos: {
+    titre: "Une approche humaine, un résultat qui se voit.",
+    texte: "Mon métier, c'est de créer du lien : entre une marque et son public, entre une idée et sa réalisation. J'aime les projets qui ont une âme, les équipes qui s'écoutent et les détails soignés. Raconte ici ton parcours en quelques lignes.",
+    stats: [[12, "+", "années d'expérience"], [60, "+", "projets réalisés"], [100, "%", "passion"]]
+  },
+  domaines: {
+    evenementiel: {
+      titre: "Événementiel", img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2Y3ZDljZiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2YyYTU4ZiIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSI0MzEiIGN5PSIyNTQiIHI9IjE5MCIgZmlsbD0iI2YyYTU4ZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIxNDkiIGN5PSIxNzQiIHI9IjI0NSIgZmlsbD0iI2YyYTU4ZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIxOTYiIGN5PSI0NzQiIHI9IjIxNCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2MTkiIGN5PSIzMTkiIHI9IjE0NCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNMjU0IDYxNlY0MzAuNUExMzUuNSAxMzUuNSAwIDAgMSA1MjUgNDMwLjVWNjE2WiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC41NCIvPjxwYXRoIGQ9Ik0xNjYgNzk0VjQ2MS41QTg3LjUgODcuNSAwIDAgMSAzNDEgNDYxLjVWNzk0WiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC41NSIvPjxwYXRoIGQ9Ik02NSA2NDRWNTAzLjVBMTMwLjUgMTMwLjUgMCAwIDEgMzI2IDUwMy41VjY0NFoiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuNDUiLz48Y2lyY2xlIGN4PSI0ODYiIGN5PSIyNzgiIHI9IjU3IiBmaWxsPSIjYzg1NTNkIiBvcGFjaXR5PSIuODUiLz48Y2lyY2xlIGN4PSI2NzMiIGN5PSIzODUiIHI9IjE5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii42Ii8+PGNpcmNsZSBjeD0iNjk1IiBjeT0iNzg0IiByPSIxNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+",
+      accroche: "Des moments dont on se souvient.",
+      intro: "De la première idée au dernier invité, je conçois et orchestre des événements sur mesure : conférences, inaugurations, soirées, manifestations publiques. Chaque détail compte.",
+      services: [["Conception créative", "Concept, thème, scénographie et fil rouge de l'événement."], ["Organisation & logistique", "Lieux, prestataires, planning, budget et sécurité."], ["Coordination le jour J", "Pilotage des équipes et gestion des imprévus avec le sourire."], ["Bilan & suite", "Retours, chiffres clés et pistes pour faire encore mieux."]],
+      projets: [["Gala annuel", "Une soirée élégante pour 300 invités.", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2Y3ZDljZiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2YyYTU4ZiIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSIyODUiIGN5PSIyMjUiIHI9IjIyNCIgZmlsbD0iI2M4NTUzZCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI0NDIiIGN5PSIzNDUiIHI9IjE2NSIgZmlsbD0iI2M4NTUzZCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2MDUiIGN5PSIyODciIHI9IjIwMSIgZmlsbD0iI2M4NTUzZCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI1NjkiIGN5PSIzNzAiIHI9IjE2NSIgZmlsbD0iI2M4NTUzZCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNMzcyIDgzMVY2MjIuMEE5NS4wIDk1LjAgMCAwIDEgNTYyIDYyMi4wVjgzMVoiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuNDEiLz48cGF0aCBkPSJNNDE2IDg1NFY1NTIuNUExMDUuNSAxMDUuNSAwIDAgMSA2MjcgNTUyLjVWODU0WiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC42MyIvPjxwYXRoIGQ9Ik0xNTAgNzQwVjU1Ni4wQTE0My4wIDE0My4wIDAgMCAxIDQzNiA1NTYuMFY3NDBaIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjQ3Ii8+PGNpcmNsZSBjeD0iNTUzIiBjeT0iMTk2IiByPSI3NSIgZmlsbD0iI2M4NTUzZCIgb3BhY2l0eT0iLjg1Ii8+PGNpcmNsZSBjeD0iNDU0IiBjeT0iODA3IiByPSIyNTciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxjaXJjbGUgY3g9IjM3OCIgY3k9IjQ3NiIgcj0iMjU0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjYiLz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbHRlcj0idXJsKCNuKSIvPjwvc3ZnPg=="], ["Inauguration", "Un lieu, une cérémonie, une communauté.", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2Y3ZDljZiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2YyYTU4ZiIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSI2NjEiIGN5PSIxNzciIHI9IjE4NCIgZmlsbD0iI2YyYTU4ZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIzOTUiIGN5PSIxODgiIHI9IjIwNSIgZmlsbD0iI2M4NTUzZCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI1MDIiIGN5PSI1MjUiIHI9IjE0MiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIyMDYiIGN5PSI1NTUiIHI9IjIyMyIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNODMgODU4VjYzOC41QTEyNC41IDEyNC41IDAgMCAxIDMzMiA2MzguNVY4NThaIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjY0Ii8+PHBhdGggZD0iTTI2OCA2NjNWNDUyLjVBMTA1LjUgMTA1LjUgMCAwIDEgNDc5IDQ1Mi41VjY2M1oiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNjIiLz48cGF0aCBkPSJNMTQwIDkwNlY2ODUuMEExNDcuMCAxNDcuMCAwIDAgMSA0MzQgNjg1LjBWOTA2WiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC40NSIvPjxjaXJjbGUgY3g9IjY0MiIgY3k9IjE5NiIgcj0iNzYiIGZpbGw9IiNjODU1M2QiIG9wYWNpdHk9Ii44NSIvPjxjaXJjbGUgY3g9IjYyOCIgY3k9IjM0NyIgcj0iMjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjYiLz48Y2lyY2xlIGN4PSI0MDYiIGN5PSI4MDEiIHI9IjE5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii42Ii8+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIxMDAwIiBmaWx0ZXI9InVybCgjbikiLz48L3N2Zz4="], ["Fête de village", "Un rendez-vous populaire et chaleureux.", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2Y3ZDljZiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2YyYTU4ZiIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSI1NjkiIGN5PSI2OTMiIHI9IjI1MiIgZmlsbD0iI2YyYTU4ZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIxMzIiIGN5PSIzNTEiIHI9IjE3NiIgZmlsbD0iI2YyYTU4ZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIzMTEiIGN5PSIyMzEiIHI9IjIzNyIgZmlsbD0iI2M4NTUzZCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIzODMiIGN5PSI4NjEiIHI9IjE5NiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNNDE3IDYwMVY0NzMuNUExNDcuNSAxNDcuNSAwIDAgMSA3MTIgNDczLjVWNjAxWiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC41NyIvPjxwYXRoIGQ9Ik00NzUgNTkyVjQyNS41QTEzOC41IDEzOC41IDAgMCAxIDc1MiA0MjUuNVY1OTJaIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjM5Ii8+PHBhdGggZD0iTTExNCA5MTVWNjQzLjVBMTIxLjUgMTIxLjUgMCAwIDEgMzU3IDY0My41VjkxNVoiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuNDkiLz48Y2lyY2xlIGN4PSI0NjIiIGN5PSIyMjAiIHI9IjcxIiBmaWxsPSIjYzg1NTNkIiBvcGFjaXR5PSIuODUiLz48Y2lyY2xlIGN4PSIyNTciIGN5PSI1MTciIHI9IjE3OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii42Ii8+PGNpcmNsZSBjeD0iNjMyIiBjeT0iNTE2IiByPSIxNjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+"]]
+    },
+    marketing: {
+      titre: "Marketing", img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZiZTdjOSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2Y0Yjk3YSIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSI0NjAiIGN5PSIxNjQiIHI9IjE5NSIgZmlsbD0iI2Y0Yjk3YSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI1NjQiIGN5PSI2ODQiIHI9IjE4MyIgZmlsbD0iI2UwNjYyZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2MjQiIGN5PSI0OTUiIHI9IjE5MCIgZmlsbD0iI2Y0Yjk3YSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIxNDEiIGN5PSI1MjgiIHI9IjIyNCIgZmlsbD0iI2ZmZjZlOCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNNDAgNzc4VjQ4OC4wQTkzLjAgOTMuMCAwIDAgMSAyMjYgNDg4LjBWNzc4WiIgZmlsbD0iI2ZmZjZlOCIgb3BhY2l0eT0iMC42NyIvPjxwYXRoIGQ9Ik0zMzAgNzk2VjU5OC4wQTEyMC4wIDEyMC4wIDAgMCAxIDU3MCA1OTguMFY3OTZaIiBmaWxsPSIjZmZmNmU4IiBvcGFjaXR5PSIwLjUzIi8+PHBhdGggZD0iTTI2NiA2NTFWNTA4LjVBMTI1LjUgMTI1LjUgMCAwIDEgNTE3IDUwOC41VjY1MVoiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNjAiLz48Y2lyY2xlIGN4PSI1NDAiIGN5PSIyOTMiIHI9IjcxIiBmaWxsPSIjZTA2NjJmIiBvcGFjaXR5PSIuODUiLz48Y2lyY2xlIGN4PSIzNDQiIGN5PSIyMzYiIHI9IjE3MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii42Ii8+PGNpcmNsZSBjeD0iNDQxIiBjeT0iMzAwIiByPSIxNTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+",
+      accroche: "Des stratégies qui touchent juste.",
+      intro: "Je construis des stratégies claires et mesurables : comprendre le public, trouver le bon message, choisir les bons canaux — et suivre les résultats pour toujours s'améliorer.",
+      services: [["Stratégie & positionnement", "Analyse du marché, cibles et promesse de marque."], ["Réseaux sociaux", "Ligne éditoriale, animation et community management."], ["Campagnes", "Newsletters, publicités et partenariats locaux."], ["Analyse & optimisation", "Tableaux de bord et décisions guidées par les données."]],
+      projets: [["Lancement de marque", "Une campagne 360° du teaser au bilan.", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZiZTdjOSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2Y0Yjk3YSIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSI2OTQiIGN5PSIzMDEiIHI9IjE2NiIgZmlsbD0iI2Y0Yjk3YSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIzMDUiIGN5PSIxNDIiIHI9IjE2NCIgZmlsbD0iI2UwNjYyZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI1MTUiIGN5PSI0NjEiIHI9IjI2MCIgZmlsbD0iI2UwNjYyZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIzNjYiIGN5PSI1NjAiIHI9IjI0MiIgZmlsbD0iI2Y0Yjk3YSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNMTg1IDg0MlY2ODkuNUExMzMuNSAxMzMuNSAwIDAgMSA0NTIgNjg5LjVWODQyWiIgZmlsbD0iI2ZmZjZlOCIgb3BhY2l0eT0iMC41MiIvPjxwYXRoIGQ9Ik00MjYgNjcyVjQzNy4wQTE0MC4wIDE0MC4wIDAgMCAxIDcwNiA0MzcuMFY2NzJaIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjU4Ii8+PHBhdGggZD0iTTE0MyA4OTVWNjg4LjVBODcuNSA4Ny41IDAgMCAxIDMxOCA2ODguNVY4OTVaIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjM2Ii8+PGNpcmNsZSBjeD0iNTI1IiBjeT0iMjE5IiByPSI2MSIgZmlsbD0iI2UwNjYyZiIgb3BhY2l0eT0iLjg1Ii8+PGNpcmNsZSBjeD0iMTc3IiBjeT0iMzYyIiByPSIxODIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxjaXJjbGUgY3g9IjU1OSIgY3k9IjMyOCIgcj0iMTcxIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjYiLz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbHRlcj0idXJsKCNuKSIvPjwvc3ZnPg=="], ["Stratégie Instagram", "Une communauté engagée, jour après jour.", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZiZTdjOSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2Y0Yjk3YSIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSIxMzgiIGN5PSIxOTgiIHI9IjI0MiIgZmlsbD0iI2ZmZjZlOCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIxNjgiIGN5PSI3MTkiIHI9IjE4NCIgZmlsbD0iI2UwNjYyZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2NjIiIGN5PSI1MjQiIHI9IjE5OSIgZmlsbD0iI2UwNjYyZiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2ODAiIGN5PSI1NDgiIHI9IjI0NiIgZmlsbD0iI2Y0Yjk3YSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNMzI2IDkxMlY2NjEuMEExMjEuMCAxMjEuMCAwIDAgMSA1NjggNjYxLjBWOTEyWiIgZmlsbD0iI2ZmZjZlOCIgb3BhY2l0eT0iMC40OSIvPjxwYXRoIGQ9Ik03MiA4MDVWNjAyLjBBMTMwLjAgMTMwLjAgMCAwIDEgMzMyIDYwMi4wVjgwNVoiIGZpbGw9IiNmZmY2ZTgiIG9wYWNpdHk9IjAuNDIiLz48cGF0aCBkPSJNMTQ4IDEwMDNWNzM0LjVBMTE5LjUgMTE5LjUgMCAwIDEgMzg3IDczNC41VjEwMDNaIiBmaWxsPSIjZmZmNmU4IiBvcGFjaXR5PSIwLjM5Ii8+PGNpcmNsZSBjeD0iNTQ5IiBjeT0iMjk5IiByPSI1NCIgZmlsbD0iI2UwNjYyZiIgb3BhY2l0eT0iLjg1Ii8+PGNpcmNsZSBjeD0iNDgxIiBjeT0iMjQxIiByPSIxODciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxjaXJjbGUgY3g9IjE5NiIgY3k9IjQyMyIgcj0iMTM2IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjYiLz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbHRlcj0idXJsKCNuKSIvPjwvc3ZnPg=="], ["Newsletter", "Un rendez-vous attendu par ses lecteurs.", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZiZTdjOSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2Y0Yjk3YSIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSIzNzgiIGN5PSI1MDMiIHI9IjIwOSIgZmlsbD0iI2Y0Yjk3YSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI1MzAiIGN5PSI0NzciIHI9IjE4NiIgZmlsbD0iI2Y0Yjk3YSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI1MTAiIGN5PSI0ODMiIHI9IjE0MyIgZmlsbD0iI2Y0Yjk3YSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI0OTIiIGN5PSIzMjUiIHI9IjI2MCIgZmlsbD0iI2Y0Yjk3YSIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNNDM4IDY4NlY0NjkuNUE4Ni41IDg2LjUgMCAwIDEgNjExIDQ2OS41VjY4NloiIGZpbGw9IiNmZmY2ZTgiIG9wYWNpdHk9IjAuNDAiLz48cGF0aCBkPSJNMjAyIDczM1Y0NzQuNUE5Ni41IDk2LjUgMCAwIDEgMzk1IDQ3NC41VjczM1oiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNTYiLz48cGF0aCBkPSJNMTc4IDY3MlY0OTguMEExMDYuMCAxMDYuMCAwIDAgMSAzOTAgNDk4LjBWNjcyWiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC4zOSIvPjxjaXJjbGUgY3g9IjQ1NCIgY3k9IjE0MSIgcj0iNTkiIGZpbGw9IiNlMDY2MmYiIG9wYWNpdHk9Ii44NSIvPjxjaXJjbGUgY3g9IjM5OCIgY3k9IjUwNCIgcj0iMjU1IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjYiLz48Y2lyY2xlIGN4PSI2OTMiIGN5PSIyMjUiIHI9IjIxNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii42Ii8+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIxMDAwIiBmaWx0ZXI9InVybCgjbikiLz48L3N2Zz4="]]
+    },
+    communication: {
+      titre: "Communication", img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2U5ZGNlZiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2M5YTlkNiIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSIyNDkiIGN5PSI4NTUiIHI9IjE2NCIgZmlsbD0iI2M5YTlkNiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIyMDQiIGN5PSIzODciIHI9IjIzNiIgZmlsbD0iIzhlNWFhOCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2NTYiIGN5PSI4MjIiIHI9IjE4MSIgZmlsbD0iI2M5YTlkNiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIyMjUiIGN5PSI0NzIiIHI9IjE0MSIgZmlsbD0iIzhlNWFhOCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNNDI2IDY5MlY0MzQuMEExMjkuMCAxMjkuMCAwIDAgMSA2ODQgNDM0LjBWNjkyWiIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iMC42MiIvPjxwYXRoIGQ9Ik0xNjggNzU3VjQ2MC41QTEwNS41IDEwNS41IDAgMCAxIDM3OSA0NjAuNVY3NTdaIiBmaWxsPSIjZmZmN2ZiIiBvcGFjaXR5PSIwLjQ2Ii8+PHBhdGggZD0iTTI1NCA5MzRWNjc5LjVBMTE1LjUgMTE1LjUgMCAwIDEgNDg1IDY3OS41VjkzNFoiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNzAiLz48Y2lyY2xlIGN4PSI2NDAiIGN5PSIyNTUiIHI9IjYzIiBmaWxsPSIjOGU1YWE4IiBvcGFjaXR5PSIuODUiLz48Y2lyY2xlIGN4PSIyOTkiIGN5PSI4MDkiIHI9IjIwOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii42Ii8+PGNpcmNsZSBjeD0iNjkwIiBjeT0iNzkyIiByPSIyNDIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+",
+      accroche: "Des mots justes, une image forte.",
+      intro: "Communication interne et externe, rédaction, relations médias, identité visuelle : je donne une voix cohérente et chaleureuse à chaque organisation.",
+      services: [["Rédaction", "Articles, communiqués, discours, newsletters et contenus web."], ["Relations presse", "Dossiers de presse, contacts médias et mise en avant."], ["Identité visuelle", "Chartes, affiches, brochures et supports digitaux."], ["Communication interne", "Informer, fédérer et faire circuler les bonnes idées."]],
+      projets: [["Magazine communal", "Un journal proche des habitants.", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2U5ZGNlZiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2M5YTlkNiIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSI0NjQiIGN5PSI2ODgiIHI9IjI0NiIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI0NjAiIGN5PSI1MjgiIHI9IjE0NyIgZmlsbD0iIzhlNWFhOCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIzODgiIGN5PSI4NDUiIHI9IjI0NCIgZmlsbD0iI2M5YTlkNiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2NjkiIGN5PSIxNjYiIHI9IjI0MCIgZmlsbD0iIzhlNWFhOCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNMjQzIDYyOVYzODIuMEExMDUuMCAxMDUuMCAwIDAgMSA0NTMgMzgyLjBWNjI5WiIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iMC42MiIvPjxwYXRoIGQ9Ik00MzIgNzYwVjQ5NS41QTgwLjUgODAuNSAwIDAgMSA1OTMgNDk1LjVWNzYwWiIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iMC41NyIvPjxwYXRoIGQ9Ik0xMzggODM5VjY3OC4wQTE0Mi4wIDE0Mi4wIDAgMCAxIDQyMiA2NzguMFY4MzlaIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjQxIi8+PGNpcmNsZSBjeD0iNTc4IiBjeT0iMTg4IiByPSI2NyIgZmlsbD0iIzhlNWFhOCIgb3BhY2l0eT0iLjg1Ii8+PGNpcmNsZSBjeD0iMjI4IiBjeT0iNDE4IiByPSIyNTEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxjaXJjbGUgY3g9IjMwMCIgY3k9IjYyMCIgcj0iMjU4IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjYiLz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbHRlcj0idXJsKCNuKSIvPjwvc3ZnPg=="], ["Campagne d'affichage", "Un message simple, visible, mémorable.", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2U5ZGNlZiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2M5YTlkNiIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSIzODYiIGN5PSIzMzQiIHI9IjE5OCIgZmlsbD0iIzhlNWFhOCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2NjAiIGN5PSIxNTkiIHI9IjE1MiIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2MTQiIGN5PSI2MDkiIHI9IjE3OCIgZmlsbD0iI2M5YTlkNiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI2MzEiIGN5PSIxODAiIHI9IjI0MSIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNMjk5IDc2OVY1MzcuNUExMzcuNSAxMzcuNSAwIDAgMSA1NzQgNTM3LjVWNzY5WiIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iMC42NyIvPjxwYXRoIGQ9Ik00OTIgOTMyVjY1OS4wQTExOS4wIDExOS4wIDAgMCAxIDczMCA2NTkuMFY5MzJaIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjM3Ii8+PHBhdGggZD0iTTQ4IDg1MVY1MzQuMEExMDIuMCAxMDIuMCAwIDAgMSAyNTIgNTM0LjBWODUxWiIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iMC40MCIvPjxjaXJjbGUgY3g9IjYzNSIgY3k9IjE4NiIgcj0iNzUiIGZpbGw9IiM4ZTVhYTgiIG9wYWNpdHk9Ii44NSIvPjxjaXJjbGUgY3g9IjI0NyIgY3k9IjYzMyIgcj0iMjM0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjYiLz48Y2lyY2xlIGN4PSIyNTciIGN5PSIzODgiIHI9IjIxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii42Ii8+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIxMDAwIiBmaWx0ZXI9InVybCgjbikiLz48L3N2Zz4="], ["Dossier de presse", "Raconter un projet en quelques pages.", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTAwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2U5ZGNlZiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2M5YTlkNiIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iYmwiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjM4Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIyIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAuMDkgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSI2MjciIGN5PSIzNTMiIHI9IjE2NCIgZmlsbD0iI2M5YTlkNiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI1NzMiIGN5PSIxOTMiIHI9IjE4MCIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSIzMjgiIGN5PSIzNTciIHI9IjIzMiIgZmlsbD0iIzhlNWFhOCIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48Y2lyY2xlIGN4PSI0ODMiIGN5PSI4NTciIHI9IjE2MCIgZmlsbD0iI2ZmZjdmYiIgb3BhY2l0eT0iLjUiIGZpbHRlcj0idXJsKCNibCkiLz48cGF0aCBkPSJNMTkzIDY1N1Y0NDUuNUExMjAuNSAxMjAuNSAwIDAgMSA0MzQgNDQ1LjVWNjU3WiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC40NSIvPjxwYXRoIGQ9Ik0xNTggNzkwVjU4MS4wQTEwNC4wIDEwNC4wIDAgMCAxIDM2NiA1ODEuMFY3OTBaIiBmaWxsPSIjZmZmN2ZiIiBvcGFjaXR5PSIwLjYwIi8+PHBhdGggZD0iTTQ0IDg0N1Y1ODEuMEE5Mi4wIDkyLjAgMCAwIDEgMjI4IDU4MS4wVjg0N1oiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNjMiLz48Y2lyY2xlIGN4PSI2MjYiIGN5PSIyOTQiIHI9Ijc3IiBmaWxsPSIjOGU1YWE4IiBvcGFjaXR5PSIuODUiLz48Y2lyY2xlIGN4PSI2NTciIGN5PSI1ODkiIHI9IjIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii42Ii8+PGNpcmNsZSBjeD0iMTA0IiBjeT0iMjMwIiByPSIxNDIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuNiIvPjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+"]]
+    }
+  }
+};
+
+const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const D = SITE.domaines, ids = Object.keys(D);
+const idOf = h => { const m = (h || '').match(/^#\/(\w+)/); return m && D[m[1]] ? m[1] : 'home'; };
+let page = idOf(location.hash);
+const url = id => id === 'home' ? '#/' : '#/' + id;
+const first = SITE.nom.split(' ')[0], last = SITE.nom.split(' ').slice(1).join(' ');
+
+/* ---------- Structure commune ---------- */
+const header = () => `<header class="top"><a href="#/" class="brand">${first[0]}<span>.</span>${last}</a>
+<nav>${['home', ...ids].map(i => `<a href="${url(i)}" class="${i === page ? 'on' : ''}">${i === 'home' ? 'Accueil' : D[i].titre}</a>`).join('')}</nav></header>`;
+
+const footer = () => `<footer class="foot"><p class="eyebrow rv">Un projet en tête ?</p>
+<h2 class="rv">Parlons-en<span>.</span></h2>
+<a class="btn big rv" href="mailto:${SITE.email}">${SITE.email}</a>
+<div class="foot-links rv"><a href="${SITE.linkedin}" target="_blank" rel="noopener">LinkedIn</a><a href="${SITE.instagram}" target="_blank" rel="noopener">Instagram</a><a href="tel:${SITE.tel.replace(/\s/g, '')}">${SITE.tel}</a></div>
+<small>© ${new Date().getFullYear()} ${SITE.nom}</small></footer>`;
+
+const card = (id, i) => `<article class="card tilt rv" style="--d:${i * .12}s"><div class="photo"><img src="${D[id].img}" alt="${D[id].titre}" loading="lazy"><span class="num">0${i + 1}</span></div>
+<div class="body"><h3>${D[id].titre}</h3><p>${D[id].accroche}</p><a class="btn" href="${url(id)}">Découvrir <i>→</i></a></div></article>`;
+
+const home = () => `
+<section class="hero">
+  <div class="hero-txt">
+    <p class="eyebrow rv">Portfolio — Événementiel · Marketing · Communication</p>
+    <h1><span class="ln"><span>${first}</span></span><span class="ln"><span><em>${last}</em></span></span></h1>
+    <p class="lead rv">${SITE.accroche}</p>
+    <div class="cta rv"><a class="btn" href="#/" data-scroll="domaines">Découvrir mon travail</a><a class="link" href="mailto:${SITE.email}">Me contacter</a></div>
+  </div>
+  <div class="hero-img">
+    <div class="arch a1" data-speed="-.07"><img src="${D.evenementiel.img}" alt=""></div>
+    <div class="arch a2" data-speed=".06"><img src="${D.marketing.img}" alt=""></div>
+    <svg class="seal" viewBox="0 0 120 120"><defs><path id="c" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#c">ÉVÉNEMENTIEL • MARKETING • COMMUNICATION • </textPath></text></svg>
+  </div>
+</section>
+<div class="marquee"><div>${'<span>Événementiel</span><span>✦</span><span>Marketing</span><span>✦</span><span>Communication</span><span>✦</span>'.repeat(8)}</div></div>
+<section class="sec" id="domaines"><p class="eyebrow rv">Mes univers</p><h2 class="rv">Trois façons de<br><em>raconter une histoire</em></h2>
+<div class="cards">${ids.map(card).join('')}</div></section>
+<section class="sec about"><div class="portrait rv tilt"><img src="${SITE.portrait}" alt="${SITE.nom}"></div>
+<div><p class="eyebrow rv">À propos</p><h2 class="rv">${SITE.apropos.titre}</h2><p class="rv txt">${SITE.apropos.texte}</p>
+<div class="stats rv">${SITE.apropos.stats.map(s => `<div><b><span data-count="${s[0]}">0</span>${s[1]}</b><small>${s[2]}</small></div>`).join('')}</div></div></section>`;
+
+const detail = id => {
+  const d = D[id], next = ids[(ids.indexOf(id) + 1) % ids.length];
+  return `
+<section class="dhero"><a class="back rv" href="#/">← Accueil</a><p class="eyebrow rv">0${ids.indexOf(id) + 1} — Portfolio</p>
+<h1><span class="ln"><span>${d.titre}<em>.</em></span></span></h1><p class="lead rv">${d.accroche}</p></section>
+<div class="cover rv"><img data-speed=".05" src="${d.img}" alt="${d.titre}"></div>
+<section class="sec narrow"><p class="big rv">${d.intro}</p></section>
+<section class="sec"><p class="eyebrow rv">Ce que je fais</p>
+<div class="list">${d.services.map((s, i) => `<div class="row rv"><span>0${i + 1}</span><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join('')}</div></section>
+<section class="sec"><p class="eyebrow rv">Réalisations</p><h2 class="rv">Projets <em>choisis</em></h2>
+<div class="gallery">${d.projets.map((p, i) => `<figure class="proj tilt rv" style="--d:${i * .12}s"><div><img src="${p[2]}" alt="${p[0]}" loading="lazy"></div><figcaption><h4>${p[0]}</h4><p>${p[1]}</p></figcaption></figure>`).join('')}</div></section>
+<a class="next" href="${url(next)}"><small>Domaine suivant</small><span>${D[next].titre} →</span></a>`;
+};
+
+/* ---------- Rideau de transition + navigation ---------- */
+const cur = document.createElement('div'); cur.className = 'curtain'; cur.innerHTML = `<span>${first[0]}.${last[0]}</span>`;
+document.body.prepend(cur);
+let shown = location.hash, busy = false;
+const reveal = () => { cur.classList.add('out'); setTimeout(() => document.body.classList.add('ready'), 250); };
+const cover = () => { cur.classList.add('pre'); cur.classList.remove('out'); cur.offsetWidth; cur.classList.remove('pre'); };
+function swap() {
+  page = idOf(location.hash); shown = location.hash;
+  document.body.classList.remove('ready');
+  $('#app').innerHTML = header() + `<main>${page === 'home' ? home() : detail(page)}</main>` + footer();
+  document.title = page === 'home' ? SITE.nom + ' — Portfolio' : D[page].titre + ' — ' + SITE.nom;
+  scrollTo(0, 0); init();
+}
+function go(h, then) {
+  if (busy) return; busy = true; cover();
+  setTimeout(() => { if (location.hash !== h) location.hash = h; swap(); reveal(); busy = false; then && setTimeout(then, 900); }, 800);
+}
+addEventListener('hashchange', () => { if (location.hash !== shown && idOf(location.hash) !== page) go(location.hash); });
+document.addEventListener('click', e => {
+  const a = e.target.closest('a'); if (!a) return;
+  const h = a.getAttribute('href') || '';
+  if (a.dataset.scroll) {
+    e.preventDefault(); const t = () => document.getElementById(a.dataset.scroll)?.scrollIntoView({ behavior: 'smooth' });
+    page === 'home' ? t() : go('#/', t); return;
+  }
+  if (h.startsWith('#/')) { e.preventDefault(); idOf(h) === page ? scrollTo({ top: 0, behavior: 'smooth' }) : go(h); }
+});
+
+/* ---------- Apparition au scroll, 3D, parallaxe, curseur ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return; e.target.classList.add('on');
+  const c = $('[data-count]', e.target); if (c) countUp(c); io.unobserve(e.target);
+}), { threshold: .12 });
+function countUp(el) { const n = +el.dataset.count; let t0; const f = t => { t0 ??= t; const p = Math.min((t - t0) / 1400, 1); el.textContent = Math.round(n * (1 - Math.pow(1 - p, 3))); p < 1 && requestAnimationFrame(f); }; requestAnimationFrame(f); }
+const fine = matchMedia('(hover:hover)').matches;
+const par = () => $$('[data-speed]').forEach(el => el.style.transform = `translateY(${scrollY * el.dataset.speed}px)`);
+function init() {
+  $$('.rv').forEach(el => io.observe(el));
+  $$('.tilt').forEach(el => {
+    el.addEventListener('pointermove', e => { if (!fine) return; const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; el.style.transform = `perspective(900px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-6px)`; });
+    el.addEventListener('pointerleave', () => el.style.transform = '');
+  });
+  par();
+}
+addEventListener('scroll', par, { passive: true });
+if (fine) {
+  const dot = document.createElement('div'); dot.className = 'dot'; document.body.append(dot);
+  let x = 0, y = 0, tx = 0, ty = 0;
+  addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; dot.style.opacity = 1; });
+  (function loop() { x += (tx - x) * .18; y += (ty - y) * .18; dot.style.transform = `translate(${x}px,${y}px)`; requestAnimationFrame(loop); })();
+  document.addEventListener('pointerover', e => dot.classList.toggle('big', !!e.target.closest('a,button,.tilt')));
+}
+swap();
+setTimeout(reveal, 700);   /* sécurité : le rideau s'ouvre toujours, même si une police ou une image tarde */
+
+</script>
 </body>
 </html>
