@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prénom Nom — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   1. VARIABLES — modifie ici couleurs et polices
+   ========================================================= */
+:root{
+  --accent:#b6ff3c;          /* couleur d'accent (vert lime) — essaie #7c5cff, #ff4d8d, #3cf0ff */
+  --accent-2:#7c5cff;        /* 2e couleur pour les halos */
+  --noir:#0a0a0a;
+  --blanc:#fafafa;
+  --gris:#8a8a8a;
+  --radius:28px;
+  --titre:'Space Grotesk',system-ui,sans-serif;
+  --texte:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--noir);color:var(--blanc);font-family:var(--texte);line-height:1.6;overflow-x:hidden;min-height:100vh}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:#000}
+
+/* Halo lumineux qui suit la souris */
+.glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(124,92,255,.28),transparent 65%);
+  transform:translate(-50%,-50%);left:50%;top:30%;transition:left .4s ease-out,top .4s ease-out}
+
+/* =========================================================
+   2. NAVIGATION
+   ========================================================= */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+  padding:20px 5vw;backdrop-filter:blur(14px);background:rgba(10,10,10,.55);border-bottom:1px solid rgba(255,255,255,.07)}
+.logo{font-family:var(--titre);font-weight:700;font-size:1.2rem;letter-spacing:-.02em}
+.logo span{color:var(--accent)}
+.menu{display:flex;gap:28px;font-size:.95rem}
+.menu a{color:var(--gris);transition:color .25s;position:relative}
+.menu a:hover,.menu a.on{color:var(--blanc)}
+.menu a.on::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--accent);border-radius:2px}
+
+/* =========================================================
+   3. TRANSITIONS ENTRE PAGES (effet 3D)
+   ========================================================= */
+#app{position:relative;z-index:1;perspective:1600px}
+.page{padding-top:90px;transform-origin:50% 0}
+.page.enter{animation:in .8s cubic-bezier(.2,.8,.2,1) both}
+.page.leave{animation:out .35s ease-in both}
+@keyframes in{from{opacity:0;transform:rotateX(-12deg) translateY(60px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:rotateX(10deg) translateY(-30px) scale(.97)}}
+
+/* =========================================================
+   4. PAGE D'ACCUEIL
+   ========================================================= */
+.hero{min-height:calc(100vh - 90px);display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:40px;padding:40px 6vw}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border:1px solid rgba(255,255,255,.15);border-radius:99px;font-size:.85rem;color:var(--gris);margin-bottom:28px}
+.badge i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+h1{font-family:var(--titre);font-size:clamp(2.8rem,7vw,6rem);line-height:1;letter-spacing:-.04em;font-weight:700}
+h1 em{font-style:normal;color:transparent;-webkit-text-stroke:2px var(--blanc)}
+h1 .acc{color:var(--accent)}
+.lead{max-width:520px;color:var(--gris);margin:28px 0 36px;font-size:1.1rem}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:99px;font-weight:500;font-family:var(--texte);font-size:.95rem;border:0;cursor:pointer;
+  background:var(--accent);color:#000;transition:transform .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 34px -8px var(--accent)}
+.btn.ghost{background:transparent;color:var(--blanc);border:1px solid rgba(255,255,255,.25);margin-left:12px}
+.btn.ghost:hover{box-shadow:none;border-color:var(--accent);color:var(--accent)}
+
+/* Scène 3D : cube + anneaux */
+.scene{height:440px;display:grid;place-items:center;perspective:1000px}
+.world{position:relative;width:200px;height:200px;transform-style:preserve-3d;animation:spin 18s linear infinite;
+  transform:rotateX(-20deg) rotateY(30deg)}
+.world .f{position:absolute;inset:0;border:2px solid var(--accent);border-radius:22px;background:rgba(182,255,60,.05);
+  backdrop-filter:blur(2px);box-shadow:inset 0 0 40px rgba(182,255,60,.15)}
+.f:nth-child(1){transform:translateZ(100px)}
+.f:nth-child(2){transform:rotateY(180deg) translateZ(100px)}
+.f:nth-child(3){transform:rotateY(90deg) translateZ(100px)}
+.f:nth-child(4){transform:rotateY(-90deg) translateZ(100px)}
+.f:nth-child(5){transform:rotateX(90deg) translateZ(100px)}
+.f:nth-child(6){transform:rotateX(-90deg) translateZ(100px)}
+.ring{position:absolute;left:50%;top:50%;border-radius:50%;border:1.5px solid rgba(255,255,255,.35)}
+.r1{width:340px;height:340px;margin:-170px;transform:rotateX(75deg)}
+.r2{width:420px;height:420px;margin:-210px;transform:rotateY(70deg);border-color:var(--accent-2)}
+@keyframes spin{to{transform:rotateX(340deg) rotateY(390deg)}}
+.scene-wrap{transition:transform .2s ease-out;transform-style:preserve-3d}
+
+/* =========================================================
+   5. CARTES (photo → dégradé vers le blanc)
+   ========================================================= */
+.section-title{text-align:center;padding:60px 5vw 20px}
+.section-title h2{font-family:var(--titre);font-size:clamp(2rem,4.5vw,3.4rem);letter-spacing:-.03em}
+.section-title p{color:var(--gris);margin-top:10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:34px;padding:50px 6vw 110px;max-width:1300px;margin:0 auto;perspective:1200px}
+.card{position:relative;background:#fff;color:#111;border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;
+  transform-style:preserve-3d;transition:transform .15s ease-out,box-shadow .4s;box-shadow:0 30px 60px -25px rgba(0,0,0,.8);will-change:transform}
+.card:hover{box-shadow:0 40px 90px -20px var(--accent)}
+/* Photo : change l'image avec style="--photo:url('ma-photo.jpg')" */
+.card .photo{height:310px;background:var(--photo,linear-gradient(135deg,#222,#555)) center/cover;position:relative}
+.card .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,#fff 100%)} /* dégradé vers le blanc */
+.card .num{position:absolute;top:18px;left:20px;z-index:2;font-family:var(--titre);font-size:.85rem;background:#000;color:var(--accent);padding:5px 12px;border-radius:99px}
+.card .body{padding:0 28px 30px;margin-top:-50px;position:relative;z-index:2;transform:translateZ(40px)}
+.card h3{font-family:var(--titre);font-size:1.9rem;letter-spacing:-.03em;margin-bottom:18px}
+.card .btn{background:#0a0a0a;color:#fff;padding:12px 24px}
+.card .btn:hover{background:var(--accent);color:#000}
+.arrow{transition:transform .25s}.btn:hover .arrow{transform:translateX(5px)}
+
+/* =========================================================
+   6. PAGES DE DÉTAIL
+   ========================================================= */
+.detail-hero{padding:70px 6vw 40px;max-width:1200px;margin:0 auto}
+.back{color:var(--gris);font-size:.9rem;display:inline-block;margin-bottom:30px;transition:color .2s}
+.back:hover{color:var(--accent)}
+.detail-hero h1{font-size:clamp(2.6rem,7vw,5.5rem)}
+.detail-hero .lead{max-width:700px}
+.stats{display:flex;flex-wrap:wrap;gap:20px;max-width:1200px;margin:0 auto;padding:10px 6vw 30px}
+.stat{flex:1;min-width:150px;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:22px}
+.stat b{display:block;font-family:var(--titre);font-size:2.4rem;color:var(--accent)}
+.stat span{color:var(--gris);font-size:.9rem}
+.block{max-width:1200px;margin:0 auto;padding:40px 6vw}
+.block h2{font-family:var(--titre);font-size:2rem;margin-bottom:24px;letter-spacing:-.02em}
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.service{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:26px;transition:transform .25s,border-color .25s}
+.service:hover{transform:translateY(-6px);border-color:var(--accent)}
+.service h4{font-family:var(--titre);font-size:1.15rem;margin-bottom:8px}
+.service p{color:var(--gris);font-size:.95rem}
+.projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px;perspective:1200px}
+.project{border-radius:24px;overflow:hidden;background:#161616;transform-style:preserve-3d;transition:transform .15s ease-out;will-change:transform}
+.project .img{height:230px;background:var(--photo,linear-gradient(135deg,var(--accent-2),#111)) center/cover}
+.project .txt{padding:22px}
+.project h4{font-family:var(--titre);font-size:1.2rem}
+.project p{color:var(--gris);font-size:.92rem;margin-top:6px}
+.contact{text-align:center;padding:80px 6vw 120px}
+.contact h2{font-family:var(--titre);font-size:clamp(2rem,5vw,4rem);letter-spacing:-.03em;margin-bottom:26px}
+footer{text-align:center;color:var(--gris);font-size:.85rem;padding:30px;border-top:1px solid rgba(255,255,255,.07);position:relative;z-index:1}
+
+@media(max-width:860px){
+  .hero{grid-template-columns:1fr;text-align:center}.lead{margin-inline:auto}
+  .scene{height:320px;transform:scale(.75)}.menu{gap:16px;font-size:.85rem}.logo{display:none}
+  .btn.ghost{margin:12px 0 0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="glow" id="glow"></div>
+
+<nav>
+  <a href="#accueil" class="logo">Prénom<span>.</span>Nom</a>
+  <div class="menu">
+    <a href="#accueil" data-r="accueil">Accueil</a>
+    <a href="#evenementiel" data-r="evenementiel">Événementiel</a>
+    <a href="#marketing" data-r="marketing">Marketing</a>
+    <a href="#communication" data-r="communication">Communication</a>
+  </div>
+</nav>
+
+<main id="app"></main>
+<footer>© 2026 Prénom Nom — Tous droits réservés</footer>
+
+<script>
+/* =========================================================
+   7. TES CONTENUS — modifie tout ici (textes, photos, projets)
+   Pour une photo : photo:"images/mon-image.jpg"
+   ========================================================= */
+const PROFIL = {
+  prenomNom: "Prénom Nom",
+  accroche: "Je crée des expériences qui marquent les esprits.",
+  email: "ton.email@exemple.ch",
+  linkedin: "https://www.linkedin.com/in/ton-profil"
+};
+
+const DOMAINES = {
+  evenementiel: {
+    num: "01", titre: "Événementiel", photo: "",
+    sousTitre: "Des événements qui racontent une histoire.",
+    intro: "De la conception à la réalisation, j'organise des événements sur mesure : conférences, inaugurations, soirées, manifestations publiques.",
+    stats: [["25+","événements organisés"],["1200","participants max."],["100%","budgets respectés"]],
+    services: [
+      ["Conception","Concept, thème, scénographie et déroulé."],
+      ["Logistique","Lieux, prestataires, planning et budget."],
+      ["Coordination","Gestion de l'équipe et du jour J."],
+      ["Bilan","Retours, statistiques et pistes d'amélioration."]
+    ],
+    projets: [
+      ["Nom de l'événement 1","Description courte du projet.",""],
+      ["Nom de l'événement 2","Description courte du projet.",""],
+      ["Nom de l'événement 3","Description courte du projet.",""]
+    ]
+  },
+  marketing: {
+    num: "02", titre: "Marketing", photo: "",
+    sousTitre: "Des stratégies qui convertissent.",
+    intro: "Je construis des stratégies marketing orientées résultats : analyse, positionnement, campagnes digitales et suivi des performances.",
+    stats: [["+60%","d'engagement"],["15","campagnes menées"],["4","canaux maîtrisés"]],
+    services: [
+      ["Stratégie","Analyse du marché, cibles et positionnement."],
+      ["Réseaux sociaux","Plan éditorial, animation, community management."],
+      ["Campagnes","Newsletters, publicités, partenariats."],
+      ["Analyse","Tableaux de bord et optimisation continue."]
+    ],
+    projets: [
+      ["Campagne 1","Description courte du projet.",""],
+      ["Campagne 2","Description courte du projet.",""],
+      ["Campagne 3","Description courte du projet.",""]
+    ]
+  },
+  communication: {
+    num: "03", titre: "Communication", photo: "",
+    sousTitre: "Des messages clairs, des marques fortes.",
+    intro: "Communication interne et externe, rédaction, relations presse, identité visuelle : je donne une voix cohérente à chaque organisation.",
+    stats: [["80+","contenus rédigés"],["10","supports créés"],["3","langues"]],
+    services: [
+      ["Rédaction","Articles, communiqués, discours, newsletters."],
+      ["Relations presse","Dossiers de presse et relations médias."],
+      ["Identité visuelle","Chartes, supports print et digitaux."],
+      ["Communication interne","Intranet, bulletins, événements internes."]
+    ],
+    projets: [
+      ["Projet 1","Description courte du projet.",""],
+      ["Projet 2","Description courte du projet.",""],
+      ["Projet 3","Description courte du projet.",""]
+    ]
+  }
+};
+
+/* =========================================================
+   8. MOTEUR DU SITE (tu n'as normalement pas besoin d'y toucher)
+   ========================================================= */
+const app = document.getElementById('app');
+const photo = p => p ? `style="--photo:url('${p}')"` : "";
+
+function accueil(){
+  const cartes = Object.entries(DOMAINES).map(([id,d]) => `
+    <article class="card tilt">
+      <div class="photo" ${photo(d.photo)}><span class="num">${d.num}</span></div>
+      <div class="body">
+        <h3>${d.titre}</h3>
+        <a class="btn" href="#${id}">Découvrir <span class="arrow">→</span></a>
+      </div>
+    </article>`).join("");
+  return `
+  <section class="hero">
+    <div>
+      <div class="badge"><i></i> Disponible pour de nouveaux projets</div>
+      <h1>${PROFIL.prenomNom.split(' ')[0]}<br><em>${PROFIL.prenomNom.split(' ').slice(1).join(' ')||'Nom'}</em><span class="acc">.</span></h1>
+      <p class="lead">${PROFIL.accroche} Événementiel, marketing et communication — trois univers, une même passion.</p>
+      <a class="btn" href="#domaines" onclick="document.querySelector('.section-title').scrollIntoView({behavior:'smooth'});return false">Voir mes domaines ↓</a>
+      <a class="btn ghost" href="mailto:${PROFIL.email}">Me contacter</a>
+    </div>
+    <div class="scene"><div class="scene-wrap" id="sw">
+      <div class="world"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></div>
+      <div class="ring r1"></div><div class="ring r2"></div>
+    </div></div>
+  </section>
+  <div class="section-title" id="domaines"><h2>Mes domaines</h2><p>Choisis un univers pour découvrir mon travail.</p></div>
+  <section class="cards">${cartes}</section>`;
+}
+
+function detail(id){
+  const d = DOMAINES[id];
+  return `
+  <section class="detail-hero">
+    <a class="back" href="#accueil">← Retour à l'accueil</a>
+    <h1>${d.titre}<span class="acc" style="color:var(--accent)">.</span></h1>
+    <p class="lead">${d.sousTitre}<br>${d.intro}</p>
+  </section>
+  <div class="stats">${d.stats.map(s=>`<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("")}</div>
+  <section class="block"><h2>Ce que je fais</h2>
+    <div class="services">${d.services.map(s=>`<div class="service"><h4>${s[0]}</h4><p>${s[1]}</p></div>`).join("")}</div>
+  </section>
+  <section class="block"><h2>Réalisations</h2>
+    <div class="projects">${d.projets.map(p=>`
+      <div class="project tilt"><div class="img" ${photo(p[2])}></div>
+      <div class="txt"><h4>${p[0]}</h4><p>${p[1]}</p></div></div>`).join("")}</div>
+  </section>
+  <section class="contact">
+    <h2>Travaillons ensemble</h2>
+    <a class="btn" href="mailto:${PROFIL.email}">Écrire un message →</a>
+    <a class="btn ghost" href="${PROFIL.linkedin}" target="_blank" rel="noopener">LinkedIn</a>
+  </section>`;
+}
+
+let busy = false;
+async function route(first){
+  const id = location.hash.slice(1) || "accueil";
+  const html = DOMAINES[id] ? detail(id) : accueil();
+  document.querySelectorAll('.menu a').forEach(a => a.classList.toggle('on', a.dataset.r === (DOMAINES[id]?id:'accueil')));
+  const old = app.firstElementChild;
+  if(old && !first){ old.classList.add('leave'); await new Promise(r=>setTimeout(r,330)); }
+  app.innerHTML = `<div class="page enter">${html}</div>`;
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange', () => { if(location.hash==="#domaines") return; route(); });
+route(true);
+
+/* Effet 3D : inclinaison des cartes au survol */
+document.addEventListener('mousemove', e => {
+  const g = document.getElementById('glow');
+  g.style.left = e.clientX+'px'; g.style.top = e.clientY+'px';
+  const el = e.target.closest?.('.tilt');
+  document.querySelectorAll('.tilt').forEach(t => { if(t!==el) t.style.transform=''; });
+  if(el){
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left)/r.width - .5, y = (e.clientY - r.top)/r.height - .5;
+    el.style.transform = `rotateY(${x*14}deg) rotateX(${-y*14}deg) translateZ(14px) scale(1.02)`;
+  }
+  const sw = document.getElementById('sw');
+  if(sw) sw.style.transform = `rotateY(${(e.clientX/innerWidth-.5)*30}deg) rotateX(${-(e.clientY/innerHeight-.5)*30}deg)`;
+});
+document.addEventListener('mouseleave', () => document.querySelectorAll('.tilt').forEach(t=>t.style.transform=''));
+</script>
+</body>
+</html>
